@@ -38,23 +38,32 @@ headers = {
 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 }
 
-try:
-    hisseTablosuIsYatirim = pd.read_html(url)
-except:
-    hisseTablosuIsYatirim = {}
+sektorTablosuIsYatirim = pd.read_pickle("sektorTablosuIsYatirim.pkl")
+# print(df)
+# exit()
+# try:
+#     hisseTablosuIsYatirim = pd.read_html(url)
+# except:
+#     hisseTablosuIsYatirim = {}
 
-if not hisseTablosuIsYatirim:
-    exit()
-else:
-    print("Sektör tablosu başarıyla getirildi.")
+# if not hisseTablosuIsYatirim:
+#     exit()
+# else:
+#     print("Sektör tablosu başarıyla getirildi.")
     
+# for table in hisseTablosuIsYatirim:
+#     if 'Sektör' in table.columns:
+#         print(table)
+#         print(type(table))
+#         table.to_pickle("sektorTablosuIsYatirim.pkl")
+
+
+
 def sektorunuKontrolEt(hisseKodu):
-    global hisseTablosuIsYatirim
-    for table in hisseTablosuIsYatirim:
-        if 'Sektör' in table.columns:
-            sektorValues = table.loc[table['Kod'] == hisseKodu, 'Sektör'].values
-            if sektorValues.size > 0:
-                return sektorValues[0]
+    global sektorTablosuIsYatirim
+    sektorValues = sektorTablosuIsYatirim.loc[sektorTablosuIsYatirim['Kod'] == hisseKodu, 'Sektör'].values
+    if sektorValues.size > 0:
+        return sektorValues[0]
         
     return False
 
