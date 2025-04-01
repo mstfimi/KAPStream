@@ -76,8 +76,11 @@ endeksHisseler = {}
 
 try:
     for endeks, url in endeksURLs.items():
-        # Make a GET request to the URL
-        response = requests.get(url, timeout=(10, 10))
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+        }
+        response = requests.get(url, headers=headers, timeout=(10, 10))
+        # response = requests.get(url, timeout=(10, 10))
         soup = BeautifulSoup(response.text, 'html.parser')
         tbody = soup.find('tbody', class_='tbody-type-default')
         for a_tag in tbody.find_all('a', {'title': True}):
