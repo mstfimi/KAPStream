@@ -129,7 +129,7 @@ params = {
 response = requests.post(url=kapBildirimURL, json=params, headers=headers, timeout=(10, 10))
 bildirimlerContent = response.content
 bildirimler = json.loads(bildirimlerContent)
-sonBildirimler = bildirimler[:1000]
+sonBildirimler = bildirimler[:100]
 
 
 def getThreadID(bildirimBasligi):
