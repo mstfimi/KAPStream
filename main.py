@@ -238,23 +238,15 @@ for index, bildirim in enumerate(sonBildirimler):
         # Append only new unique rows
         if not new_data.empty:
             df = pd.concat([st.session_state.tab1Data, new_data], ignore_index=True)
+            df.fillna("", inplace=True)
             st.session_state.tab1Data = df
 
-    # st.session_state.tab1Data["Bildirim Link"] = st.session_state.tab1Data["Bildirim Link"].apply(lambda x: f'<a href="{x}" target="_blank">{x}</a>')
-   
     # Tab 1: Refreshing Data
     with tab1:
         with df_placeholder.container():
-            st.dataframe(st.session_state.tab1Data.set_index("Kod"), use_container_width=True, height=900)
-            # st.write(st.session_state.tab1Data.to_html(escape=False), unsafe_allow_html=True)
-
-
-# Set "Kod" as the index and drop the default index
-df = df.set_index("Kod")
-
-# Display the updated DataFrame
-print(df)
-
+            df = st.session_state.tab1Data.set_index("Kod")
+            st.dataframe(df, use_container_width=True, height=900)
+            
 refresh_interval = 10
 time.sleep(refresh_interval)
 st.rerun()
