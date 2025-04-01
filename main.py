@@ -143,10 +143,10 @@ for index, bildirim in enumerate(sonBildirimler):
     sirketFon = bildirim['disclosureBasic']['companyTitle']
     tip = bildirim['disclosureBasic']['disclosureClass']
     konu = bildirim['disclosureBasic']['title']
-    ozetBilgi = bildirim['disclosureBasic'].get('summary', '')
+    ozetBilgi = bildirim['disclosureBasic'].get('summary', "")
     ilgiliSirketler = bildirim['disclosureBasic']['relatedStocks']
-    yil = bildirim['disclosureBasic'].get('year', '')
-    periyot = bildirim['disclosureBasic'].get('period', '')
+    yil = bildirim['disclosureBasic'].get('year', "")
+    periyot = bildirim['disclosureBasic'].get('period', "")
     bildirimNo = bildirim['disclosureBasic']['disclosureIndex']
     bildirimLink = f"https://www.kap.org.tr/tr/Bildirim/{bildirimNo}"
 
@@ -237,16 +237,23 @@ for index, bildirim in enumerate(sonBildirimler):
         new_data = new_row[~new_row["Bildirim Link"].isin(existing_links)]
         # Append only new unique rows
         if not new_data.empty:
-            st.session_state.tab1Data = pd.concat([st.session_state.tab1Data, new_data], ignore_index=True)
+            df = pd.concat([st.session_state.tab1Data, new_data], ignore_index=True)
+            st.session_state.tab1Data = df
 
     # st.session_state.tab1Data["Bildirim Link"] = st.session_state.tab1Data["Bildirim Link"].apply(lambda x: f'<a href="{x}" target="_blank">{x}</a>')
    
     # Tab 1: Refreshing Data
     with tab1:
         with df_placeholder.container():
-            st.dataframe(st.session_state.tab1Data, use_container_width=True, height=900)
+            st.dataframe(st.session_state.tab1Data.set_index("Kod"), use_container_width=True, height=900)
             # st.write(st.session_state.tab1Data.to_html(escape=False), unsafe_allow_html=True)
 
+
+# Set "Kod" as the index and drop the default index
+df = df.set_index("Kod")
+
+# Display the updated DataFrame
+print(df)
 
 refresh_interval = 10
 time.sleep(refresh_interval)
